@@ -1,4 +1,3 @@
-# OperatingSystemsProject4
 
 Various Project Specifications:
   Simulation Information:
