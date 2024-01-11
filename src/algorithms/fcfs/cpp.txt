@@ -1,0 +1,45 @@
+#include "algorithms/spn/spn_algorithm.hpp"
+
+
+
+#define FMT_HEADER_ONLY
+#include "utilities/fmt/format.h"
+#include "utilities/stable_priority_queue/stable_priority_queue.hpp"
+
+/*
+    Here is where you should define the logic for the SPN algorithm.
+*/
+
+SPNScheduler::SPNScheduler(int slice) {
+    if (slice != -1) {
+        throw std::invalid_argument("SPN must have a timeslice of -1");
+    }
+}
+
+std::shared_ptr<SchedulingDecision> SPNScheduler::get_next_thread() {
+    std::shared_ptr<SchedulingDecision> decision = std::make_shared<SchedulingDecision>();
+    
+    if (!ready_queue.empty()) {
+        decision->thread = ready_queue.top();
+        decision->explanation = fmt::format("Selected from {} threads. Will run to completion of burst.", ready_queue.size());
+        ready_queue.pop();
+
+       
+        
+    }else{
+        decision->thread = nullptr;
+        //decision->time_slice = -1;
+        decision->explanation = "No threads in the ready queue.";
+    }
+
+
+    return decision;
+}
+
+void SPNScheduler::add_to_ready_queue(std::shared_ptr<Thread> thread) {
+    ready_queue.push(thread->get_next_burst(BurstType::CPU)->length,thread);
+}
+
+size_t SPNScheduler::size() const {
+    return ready_queue.size();
+}

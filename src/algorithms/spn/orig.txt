@@ -1,0 +1,44 @@
+#include "algorithms/spn/spn_algorithm.hpp"
+#include <cassert>
+#include <stdexcept>
+#include "utilities/fmt/format.h"
+SPNScheduler::SPNScheduler(int slice) {
+    if (slice != -1) {
+        throw std::invalid_argument("SPN must have a timeslice of -1");
+    }
+}
+
+std::shared_ptr<SchedulingDecision> SPNScheduler::get_next_thread() {
+    // If the ready queue is empty, return nullptr
+    if (mReadyQueue.empty()) {
+        auto decision = std::make_shared<SchedulingDecision>();
+        decision->thread = nullptr;
+        decision->time_slice = -1;
+        decision->explanation = "No threads in the ready queue.";
+        return decision;
+    }
+
+    // Get the thread with the shortest remaining time
+    auto nextThread = mReadyQueue.top();
+    
+
+    // Create a scheduling decision with the chosen thread and set its state to running
+    auto decision = std::make_shared<SchedulingDecision>();
+    decision->thread = nextThread;
+    decision->time_slice = -1;
+    
+    decision->explanation = "Selected from " + std::to_string(mReadyQueue.size() + 1) + " threads; will run to completion.";
+    mReadyQueue.pop();
+
+    return decision;
+}
+
+void SPNScheduler::add_to_ready_queue(std::shared_ptr<Thread> thread) {
+    // Add the thread to the ready queue with its remaining time as the priority
+    mReadyQueue.push(thread->remaining_time, thread);
+}
+
+
+size_t SPNScheduler::size() const {
+    return mReadyQueue.size();
+}
