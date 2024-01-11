@@ -1,14 +1,5 @@
 # OperatingSystemsProject4
 
-
-• Developed a CPU scheduling simulator to implement various scheduling algorithms
-• Dealt with a large codebase, gaining proficiency in modern C++ principles, and working with existing code. • Managed a simulation with single CPU, multiple I/O devices, kernel-level threads, and five task states.
-• Implemented various scheduling algorithms such as FCFS, SPN, RR, PRIORITY, and MLFQ.
-• Utilized next-event simulation model with event queue to manage state transitions.
-• Read scheduling scenarios from a simulation file with specified format.
-• Provided structured output with options for metrics, per-thread details, and verbose information.
-
-
 Various Project Specifications:
   Simulation Information:
     The simulation is over a computer with a single CPU and an infinite number of I/O devices.
